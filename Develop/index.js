@@ -100,7 +100,15 @@ const promptUser = () => {
             type: `checkbox`,
             name: `license`,
             message: `What kind of license does your project have?`,
-            choices: [`MIT`, `APACHE 2.0`, `GPL 3.0`, `BSD 3`, `None`]
+            choices: [`MIT`, `APACHE 2.0`, `GPL 3.0`, `BSD 3`, `None`],
+            validate: license => {
+                if (license[0]) {
+                    return true;
+                } else {
+                    console.log(`Please select one.`);
+                    return false;
+                }
+            }
         },
         {
             type: `input`,
