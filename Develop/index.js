@@ -10,7 +10,7 @@ const promptUser = () => {
     return inquirer.prompt([
         {
             type: `input`,
-            name: `name`,
+            name: `title`,
             message: `What is the title of your project?`,
             validate: nameInput => {
                 if (nameInput) {
@@ -132,9 +132,9 @@ const promptUser = () => {
 }
 
 // TODO: Create a function to write README file
-function writeToFile(fileName, data) {
+function writeToFile(data) {
     return new Promise((resolve, reject) => {
-        fs.writeFile(`./${fileName}.md`, data, err => {
+        fs.writeFile(`./README.md`, data, err => {
             if (err) {
                 reject(err);
                 return;
@@ -147,8 +147,33 @@ function writeToFile(fileName, data) {
     });
 };
 
+// function writeToFile(fileName, data) {
+//     return new Promise((resolve, reject) => {
+//         fs.writeFile(`./${fileName}.md`, data, err => {
+//             if (err) {
+//                 reject(err);
+//                 return;
+//             }
+//             resolve({
+//                 ok: true,
+//                 message: `README Created!`
+//             });
+//         })
+//     });
+// };
+
 // TODO: Create a function to initialize app
-function init() {}
+// function init() {}
 
 // Function call to initialize app
-init();
+// init();
+promptUser()
+    .then(readmeData => {
+        return generateMarkdown(readmeData);
+    })
+    .then(markdown => {
+        return writeToFile(markdown);
+    })
+    .catch(err => {
+        console.log(err);
+    });
