@@ -1,11 +1,10 @@
-// TODO: Include packages needed for this application
 const fs = require(`fs`);
+
 const inquirer = require(`inquirer`);
 
-const generateMarkdown = require(`./utils/generateMarkdown.js`);
+const generateMarkdown = require(`./Develop/utils/generateMarkdown.js`);
 
-// TODO: Create an array of questions for user input
-// const questions = [];
+
 const promptUser = () => {
     return inquirer.prompt([
         {
@@ -50,12 +49,33 @@ const promptUser = () => {
                 } else {
                     return false;
                 }
+            },
+            validate: installInfo => {
+                if (installInfo) {
+                    return true;
+                } else {
+                    console.log(`Please enter installation instructions!`);
+                    return false;
+                }
             }
+        },
+        {
+            type: `confirm`,
+            name: `usageConfirm`,
+            message: `Would you like to include usage information for your application?`,
+            default: true
         },
         {
             type: `input`,
             name: `usageInfo`,
             message: `Enter usage information for your application:`,
+            when: ({ usageConfirm }) => {
+                if (usageConfirm) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
             validate: usageInput => {
                 if (usageInput) {
                     return true;
@@ -81,12 +101,33 @@ const promptUser = () => {
                 } else {
                     return false;
                 }
+            },
+            validate: contInput => {
+                if (contInput) {
+                    return true;
+                } else {
+                    console.log(`Please describe how to contribute.`);
+                    return false;
+                }
             }
+        },
+        {
+            type: `confirm`,
+            name: `testConfirm`,
+            message: `Would you like to include testing instructions?`,
+            default: true
         },
         {
             type: `input`,
             name: `testInstructions`,
             message: `Enter instructions for testing your application:`,
+            when: ({ testConfirm }) => {
+                if (testConfirm) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
             validate: testInput => {
                 if (testInput) {
                     return true;
@@ -139,10 +180,9 @@ const promptUser = () => {
     ])
 }
 
-// TODO: Create a function to write README file
 function writeToFile(data) {
     return new Promise((resolve, reject) => {
-        fs.writeFile(`./README.md`, data, err => {
+        fs.writeFile(`./dist/README.md`, data, err => {
             if (err) {
                 reject(err);
                 return;
@@ -155,26 +195,6 @@ function writeToFile(data) {
     });
 };
 
-// function writeToFile(fileName, data) {
-//     return new Promise((resolve, reject) => {
-//         fs.writeFile(`./${fileName}.md`, data, err => {
-//             if (err) {
-//                 reject(err);
-//                 return;
-//             }
-//             resolve({
-//                 ok: true,
-//                 message: `README Created!`
-//             });
-//         })
-//     });
-// };
-
-// TODO: Create a function to initialize app
-// function init() {}
-
-// Function call to initialize app
-// init();
 promptUser()
     .then(readmeData => {
         return generateMarkdown(readmeData);

@@ -30,12 +30,12 @@ function renderLicenseSection(license) {
 }
 
 // TODO: Create a function to generate markdown for README
-const generateInstallation = installInstructions => {
-  if (!installInstructions) {
+const generateSection = (propertyContent, headerText) => {
+  if (!propertyContent) {
     return ``;
   }
-  return `## Installation
-  ${installInstructions}
+  return `## ${headerText}
+  ${propertyContent}
   `
 }
 const generateOptionalLink = (property, linkText) => {
@@ -45,17 +45,8 @@ const generateOptionalLink = (property, linkText) => {
   return `- [${linkText}](#${linkText.toLowerCase()})`
 }
 
-const generateContribution = contribution => {
-  if (!contribution) {
-    return ``;
-  }
-  return `## Contribution
-  ${contribution}
-  `
-}
+
 function generateMarkdown(data) {
-  console.log(data);
-  console.log(data.license[0]);
   return `# ${data.title}
   
   ## Description${renderLicenseSection(data.license)}
@@ -65,25 +56,27 @@ function generateMarkdown(data) {
 
   ## Table of Contents
   ${generateOptionalLink(data.installInstructions, `Installation`)}
-  - [Usage](#usage)
+  ${generateOptionalLink(data.usageInfo, `Usage`)}
   ${generateOptionalLink(data.contribution, `Contribution`)}
-  - [Testing](#testing)
+  ${generateOptionalLink(data.testInstructions, `Testing`)}
   - [Questions](#questions)
 
-  ${generateInstallation(data.installInstructions)}
+  ${generateSection(data.installInstructions, `Installation`)}
 
-  ## Usage
-  ${data.usageInfo}
+  ${generateSection(data.usageInfo, `Usage`)}
 
-  ${generateContribution(data.contribution)}
+  ${generateSection(data.contribution, `Contribution`)}
 
-  ## Testing
-  ${data.testInstructions}
+  ${generateSection(data.testInstructions, `Testing`)}
 
   ## Questions
-  ${data.github}
-  ${data.email}
+  If you have any questions:
 
+  Find me on <a href = "http://www.github.com/${data.github}" target = "_blank">GitHub</a>
+
+  or
+
+  Contact me at ${data.email}.
 `;
 }
 
