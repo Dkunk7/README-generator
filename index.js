@@ -4,7 +4,7 @@ const inquirer = require(`inquirer`);
 
 const generateMarkdown = require(`./Develop/utils/generateMarkdown.js`);
 
-
+// question prompts 
 const promptUser = () => {
     return inquirer.prompt([
         {
@@ -179,7 +179,7 @@ const promptUser = () => {
         }
     ])
 }
-
+// creates file
 function writeToFile(data) {
     return new Promise((resolve, reject) => {
         fs.writeFile(`./dist/README.md`, data, err => {
@@ -194,7 +194,7 @@ function writeToFile(data) {
         })
     });
 };
-
+// executes the whole dang thing
 promptUser()
     .then(readmeData => {
         return generateMarkdown(readmeData);
